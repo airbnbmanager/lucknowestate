@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Caller CRM – Lucknow Estate</title>
+  <meta name="theme-color" content="#0b231c">
+  <link rel="icon" href="/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0b231c;
+      --primary-light: #153c31;
+      --accent: #d97706;
+      --gold: #f59e0b;
+      --danger: #dc2626;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #2563eb;
+      --purple: #7c3aed;
+      --bg: #f4f6f4;
+      --card-bg: #ffffff;
+      --text: #1a231f;
+      --text-muted: #64748b;
+      --border: #e2e8e4;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(11, 35, 28, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Header */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      background: var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .header-title { font-size: 16px; font-weight: 700; }
+    .header-user { font-size: 13px; color: var(--gold); font-weight: 600; }
+    .header-actions { display: flex; gap: 8px; }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #b45309; }
+    .btn-call { background: var(--primary); color: #fff; }
+    .btn-wa { background: #25d366; color: #fff; }
+    .btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-light { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* Main Container */
+    main {
+      max-width: 760px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+
+    /* Auth Box */
+    .auth-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+      max-width: 360px;
+      margin: 60px auto;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .auth-card h2 { margin-bottom: 8px; color: var(--primary); font-size: 20px; }
+    .auth-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .auth-card input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    .auth-card input:focus { outline: none; border-color: var(--accent); }
+
+    /* Stats Ribbon */
+    .stats-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat-pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .stat-pill b { display: block; font-size: 20px; font-weight: 800; color: var(--primary); }
+    .stat-pill span { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .stat-pill.danger b { color: var(--danger); }
+    .stat-pill.success b { color: var(--success); }
+
+    /* Search & Filter Tabs */
+    .search-box {
+      margin-bottom: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab {
+      padding: 8px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .filter-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Lead Card */
+    .lead-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: all 0.2s;
+    }
+    .lead-card.overdue {
+      border-left: 5px solid var(--danger);
+      background: #fffafa;
+    }
+    .lead-card.due-today {
+      border-left: 5px solid var(--warning);
+      background: #fffdfa;
+    }
+    .lead-card.is-new {
+      border-left: 5px solid var(--info);
+    }
+
+    .lead-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .lead-name { font-size: 16px; font-weight: 700; color: var(--primary); }
+    .lead-time { font-size: 11px; color: var(--text-muted); }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-new { background: #e0f2fe; color: #0369a1; }
+    .status-contacted { background: #fef3c7; color: #b45309; }
+    .status-interested { background: #f3e8ff; color: #7e22ce; }
+    .status-site-visit { background: #ffedd5; color: #c2410c; }
+    .status-won { background: #dcfce7; color: #15803d; }
+    .status-lost { background: #f1f5f9; color: #64748b; }
+
+    .lead-details {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .lead-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .lead-tag {
+      background: var(--bg);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .last-call-box {
+      background: #f8faf8;
+      border-left: 3px solid #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+    .last-call-header {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .follow-up-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .follow-up-overdue { background: #fee2e2; color: #b91c1c; }
+    .follow-up-today { background: #fef3c7; color: #b45309; }
+    .follow-up-future { background: #e0f2fe; color: #0284c7; }
+
+    .lead-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Modal for Log Call */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 450px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal-card h3 { margin-bottom: 4px; font-size: 18px; color: var(--primary); }
+    .modal-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+    .form-group select, .form-group textarea, .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    .form-group select:focus, .form-group textarea:focus, .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      .stats-ribbon { grid-template-columns: repeat(2, 1fr); }
+      .lead-actions { grid-template-columns: 1fr 1fr; }
+      .btn-history-toggle { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header>
+    <div class="header-left">
+      <div class="header-logo">📞</div>
+      <div>
+        <div class="header-title">Lucknow Estate CRM</div>
+        <div class="header-user" id="userName">Caller Portal</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-sm btn-light" onclick="loadLeads()">🔄 Refresh</button>
+      <button class="btn btn-sm btn-light" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Login Card (Shown when not authenticated) -->
+  <div id="authView" style="display:none;">
+    <div class="auth-card">
+      <div style="font-size:36px; margin-bottom:12px;">📞</div>
+      <h2>Telecaller Login</h2>
+      <p>Enter your assigned name & 4-digit PIN</p>
+      <input type="text" id="loginName" placeholder="Caller Name (e.g. Riya Sharma)" autofocus>
+      <input type="password" id="loginPin" placeholder="4-digit PIN (e.g. 1234)">
+      <button class="btn btn-primary" style="width:100%; padding:12px;" onclick="doLogin()">
+        Sign In to Caller CRM
+      </button>
+      <div style="margin-top:16px; font-size:12px; color:var(--text-muted);">
+        Demo Login: <b>Riya Sharma</b> (PIN: <b>1234</b>) or <b>Amit Verma</b> (PIN: <b>5678</b>)
+      </div>
+    </div>
+  </div>
+
+  <!-- Main CRM View -->
+  <main id="crmView" style="display:none;">
+    <!-- Performance Stats Ribbon -->
+    <div class="stats-ribbon">
+      <div class="stat-pill">
+        <b id="statTotal">0</b>
+        <span>Assigned Leads</span>
+      </div>
+      <div class="stat-pill danger">
+        <b id="statDue">0</b>
+        <span>Follow-up Due</span>
+      </div>
+      <div class="stat-pill">
+        <b id="statNew">0</b>
+        <span>Uncalled</span>
+      </div>
+      <div class="stat-pill success">
+        <b id="statTodayCalls">0</b>
+        <span>Calls Today</span>
+      </div>
+    </div>
+
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Search by name, phone or property..." oninput="filterAndRender()">
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setTab('all', this)">All Leads</button>
+      <button class="filter-tab" onclick="setTab('due', this)">🚨 Due / Overdue</button>
+      <button class="filter-tab" onclick="setTab('new', this)">🆕 New (Uncontacted)</button>
+      <button class="filter-tab" onclick="setTab('site-visit', this)">🚗 Site Visits</button>
+      <button class="filter-tab" onclick="setTab('interested', this)">⭐ Interested</button>
+      <button class="filter-tab" onclick="setTab('won', this)">✅ Won / Closed</button>
+    </div>
+
+    <!-- Leads Container -->
+    <div id="leadsList">
+      <!-- Injected via JavaScript -->
+    </div>
+  </main>
+
+  <!-- Modal for Logging Call -->
+  <div class="modal-overlay" id="callModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <h3 id="modalLeadName">Log Call</h3>
+      <p id="modalLeadPhone">Record call outcome and follow-up</p>
+
+      <form id="callLogForm" onsubmit="submitCallLog(event)">
+        <input type="hidden" id="modalLeadId">
+
+        <div class="form-group">
+          <label>Call Outcome *</label>
+          <select id="modalOutcome" required>
+            <option value="Interested">⭐ Interested (Wants brochure / discussing)</option>
+            <option value="Site visit fixed">🚗 Site visit fixed (Scheduled)</option>
+            <option value="Baad mein call karein">⏰ Baad mein call karein (Busy / Call back)</option>
+            <option value="Phone nahi uthaya">📵 Phone nahi uthaya (No response)</option>
+            <option value="Deal done">🎉 Deal done (Token / Won)</option>
+            <option value="Interested nahi">❌ Interested nahi (Not interested)</option>
+            <option value="Wrong number">⚠️ Wrong number</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Next Follow-Up Date</label>
+          <input type="date" id="modalNextDate">
+        </div>
+
+        <div class="form-group">
+          <label>Conversation Notes *</label>
+          <textarea id="modalNote" rows="3" placeholder="What did the client say? Specific budget, preferences, family members, site visit timing..." required></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeCallModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save Call Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let allLeads = [];
+    let currentTab = 'all';
+    let currentUser = null;
+
+    const OUTCOMES = [
+      'Interested',
+      'Site visit fixed',
+      'Baad mein call karein',
+      'Phone nahi uthaya',
+      'Deal done',
+      'Interested nahi',
+      'Wrong number'
+    ];
+
+    const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    // Check Auth on load
+    async function init() {
+      try {
+        const res = await fetch('/api/me');
+        if (res.ok) {
+          currentUser = await res.json();
+          if (currentUser.role === 'caller') {
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('authView').style.display = 'none';
+            document.getElementById('crmView').style.display = 'block';
+            loadLeads();
+            return;
+          }
+        }
+      } catch (e) {}
+      showLogin();
+    }
+
+    function showLogin() {
+      document.getElementById('authView').style.display = 'block';
+      document.getElementById('crmView').style.display = 'none';
+    }
+
+    async function doLogin() {
+      const name = document.getElementById('loginName').value.trim();
+      const pin = document.getElementById('loginPin').value.trim();
+      if (!name || !pin) return alert('Kripya apna naam aur PIN bharein');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: 'caller', name, password: pin })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          currentUser = data;
+          document.getElementById('userName').textContent = data.name;
+          document.getElementById('authView').style.display = 'none';
+          document.getElementById('crmView').style.display = 'block';
+          loadLeads();
+        } else {
+          const err = await res.json();
+          alert(err.error || 'Login fail ho gaya');
+        }
+      } catch (e) {
+        alert('Server se sampark nahi ho paaya');
+      }
+    }
+
+    async function logout() {
+      await fetch('/api/logout');
+      currentUser = null;
+      showLogin();
+    }
+
+    async function loadLeads() {
+      try {
+        const res = await fetch('/api/caller/leads');
+        if (res.status === 401) return showLogin();
+        allLeads = await res.json();
+        updateStats();
+        filterAndRender();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function isDue(lead) {
+      if (['won', 'lost'].includes(lead.status)) return false;
+      const today = new Date().toISOString().slice(0, 10);
+      const lastCall = lead.calls[lead.calls.length - 1];
+      return Boolean(lastCall && lastCall.next && lastCall.next <= today);
+    }
+
+    function updateStats() {
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById('statTotal').textContent = allLeads.length;
+      document.getElementById('statDue').textContent = allLeads.filter(isDue).length;
+      document.getElementById('statNew').textContent = allLeads.filter(l => l.status === 'new').length;
+
+      const myCallsToday = allLeads
+        .flatMap(l => l.calls)
+        .filter(c => c.by === currentUser?.name && c.at && c.at.startsWith(today)).length;
+      document.getElementById('statTodayCalls').textContent = myCallsToday;
+    }
+
+    function setTab(tab, btn) {
+      currentTab = tab;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      filterAndRender();
+    }
+
+    function filterAndRender() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const today = new Date().toISOString().slice(0, 10);
+
+      let list = allLeads;
+
+      if (currentTab === 'due') {
+        list = list.filter(isDue);
+      } else if (currentTab === 'new') {
+        list = list.filter(l => l.status === 'new');
+      } else if (currentTab === 'site-visit') {
+        list = list.filter(l => l.status === 'site-visit');
+      } else if (currentTab === 'interested') {
+        list = list.filter(l => l.status === 'interested');
+      } else if (currentTab === 'won') {
+        list = list.filter(l => l.status === 'won');
+      }
+
+      if (q) {
+        list = list.filter(l =>
+          (l.name && l.name.toLowerCase().includes(q)) ||
+          (l.phone && l.phone.includes(q)) ||
+          (l.property && l.property.toLowerCase().includes(q)) ||
+          (l.interest && l.interest.toLowerCase().includes(q))
+        );
+      }
+
+      // Sort: Due leads first, then New leads, then recent
+      list.sort((a, b) => {
+        const aDue = isDue(a);
+        const bDue = isDue(b);
+        if (aDue && !bDue) return -1;
+        if (!aDue && bDue) return 1;
+        if (a.status === 'new' && b.status !== 'new') return -1;
+        if (a.status !== 'new' && b.status === 'new') return 1;
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+
+      renderLeads(list);
+    }
+
+    function renderLeads(list) {
+      const container = document.getElementById('leadsList');
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="background:#fff; border-radius:12px; padding:40px; text-align:center; color:#64748b; border:1px solid var(--border);">
+            Koi lead nahi mili.
+          </div>
+        `;
+        return;
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+
+      container.innerHTML = list.map(l => {
+        const lastCall = l.calls[l.calls.length - 1];
+        const due = isDue(l);
+        const isOverdue = lastCall && lastCall.next && lastCall.next < today;
+        const isToday = lastCall && lastCall.next && lastCall.next === today;
+
+        let cardClass = 'lead-card';
+        if (due) cardClass += isOverdue ? ' overdue' : ' due-today';
+        else if (l.status === 'new') cardClass += ' is-new';
+
+        const cleanPhone = l.phone.replace(/\D/g, '').replace(/^(\d{10})$/, '91$1');
+        const waMsg = encodeURIComponent(`Namaste ${l.name} ji, main ${currentUser?.name || 'Lucknow Estate'} se bol rahi hoon. Aapne ${l.property || l.interest} ke liye inquiry ki thi. Kya hum is baare mein baat kar sakte hain?`);
+
+        return `
+          <div class="${cardClass}">
+            <div class="lead-header">
+              <div>
+                <div class="lead-name">${esc(l.name)}</div>
+                <div class="lead-time">Received: ${new Date(l.createdAt).toLocaleDateString()} ${new Date(l.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+              </div>
+              <span class="status-badge status-${l.status}">${l.status}</span>
+            </div>
+
+            <div class="lead-tags">
+              <span class="lead-tag">🏷️ ${esc(l.interest)}</span>
+              <span class="lead-tag">💰 ${esc(l.budget)}</span>
+              ${l.property ? `<span class="lead-tag">📍 ${esc(l.property)}</span>` : ''}
+              <span class="lead-tag">🌐 ${esc(l.utm_source)}</span>
+            </div>
+
+            ${l.message ? `<div class="lead-details" style="font-style:italic; color:#475569;">"${esc(l.message)}"</div>` : ''}
+
+            ${lastCall ? `
+              <div class="last-call-box">
+                <div class="last-call-header">
+                  <span>Last Call: <b>${esc(lastCall.outcome)}</b></span>
+                  <span>${new Date(lastCall.at).toLocaleDateString()}</span>
+                </div>
+                <div>${esc(lastCall.note)}</div>
+                ${lastCall.next ? `
+                  <div style="margin-top:6px;">
+                    <span class="follow-up-badge ${isOverdue ? 'follow-up-overdue' : isToday ? 'follow-up-today' : 'follow-up-future'}">
+                      ⏰ Follow-up: ${lastCall.next} ${isOverdue ? '(Overdue!)' : isToday ? '(Today)' : ''}
+                    </span>
+                  </div>
+                ` : ''}
+              </div>
+            ` : '<div style="font-size:12px; color:#0284c7; margin-bottom:10px;">🆕 Nayi lead hai, abhi pehla call nahi hua.</div>'}
+
+            <div class="lead-actions">
+              <a class="btn btn-call" href="tel:${l.phone}">
+                📞 ${l.phone}
+              </a>
+              <a class="btn btn-wa" target="_blank" href="https://wa.me/${cleanPhone}?text=${waMsg}">
+                💬 WhatsApp
+              </a>
+              <button class="btn btn-primary" onclick="openCallModal('${l.id}')">
+                📝 Log Call
+              </button>
+            </div>
+
+            ${l.calls && l.calls.length > 1 ? `
+              <details style="margin-top:10px; font-size:12px; color:var(--text-muted);">
+                <summary style="cursor:pointer; font-weight:600;">View Call History (${l.calls.length} logs)</summary>
+                <div style="padding-top:8px;">
+                  ${l.calls.map(c => `
+                    <div style="border-bottom:1px solid #e2e8f0; padding:6px 0;">
+                      <b>${new Date(c.at).toLocaleDateString()}</b> – <b>${esc(c.by)}</b> (${esc(c.outcome)}): ${esc(c.note)}
+                    </div>
+                  `).join('')}
+                </div>
+              </details>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openCallModal(leadId) {
+      const lead = allLeads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      document.getElementById('modalLeadId').value = lead.id;
+      document.getElementById('modalLeadName').textContent = `Log Call: ${lead.name}`;
+      document.getElementById('modalLeadPhone').textContent = `Mobile: ${lead.phone} • Requirement: ${lead.interest}`;
+      document.getElementById('modalNote').value = '';
+
+      // Default follow up to tomorrow
+      const tomorrow = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+      document.getElementById('modalNextDate').value = tomorrow;
+
+      document.getElementById('callModal').style.display = 'flex';
+    }
+
+    function closeCallModal() {
+      document.getElementById('callModal').style.display = 'none';
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'callModal') closeCallModal();
+    }
+
+    async function submitCallLog(e) {
+      e.preventDefault();
+      const id = document.getElementById('modalLeadId').value;
+      const outcome = document.getElementById('modalOutcome').value;
+      const note = document.getElementById('modalNote').value;
+      const next = document.getElementById('modalNextDate').value;
+
+      try {
+        const res = await fetch('/api/caller/call', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, outcome, note, next })
+        });
+
+        if (res.ok) {
+          closeCallModal();
+          loadLeads();
+        } else {
+          const err = await res.json();
+          alert(err.error || 'Save nahi ho saka');
+        }
+      } catch (err) {
+        alert('Server error while saving call record');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

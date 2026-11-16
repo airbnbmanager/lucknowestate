@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin Dashboard – Lucknow Estate</title>
+  <meta name="theme-color" content="#0b231c">
+  <link rel="icon" href="/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0b231c;
+      --primary-light: #153c31;
+      --accent: #d97706;
+      --gold: #f59e0b;
+      --danger: #dc2626;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #0284c7;
+      --purple: #7c3aed;
+      --bg: #f8faf8;
+      --card-bg: #ffffff;
+      --text: #1a231f;
+      --text-muted: #64748b;
+      --border: #e2e8e4;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(11, 35, 28, 0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Top Navigation */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .brand-group { display: flex; align-items: center; gap: 12px; }
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      background: var(--gold);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 18px;
+    }
+    .brand-name {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #b45309; }
+    .btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-dark { background: rgba(255,255,255,0.15); color: #fff; }
+    .btn-danger { background: #fee2e2; color: var(--danger); }
+
+    /* Main Container */
+    main {
+      max-width: 1320px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    /* Auth Box */
+    .auth-wrap {
+      max-width: 380px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .auth-wrap h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+    .auth-wrap p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .auth-wrap input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    /* KPI Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .kpi-card small {
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .kpi-num {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+      font-family: 'Cinzel', serif;
+    }
+    .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+    .kpi-card.alert { border-left: 4px solid var(--danger); }
+    .kpi-card.alert .kpi-num { color: var(--danger); }
+    .kpi-card.success { border-left: 4px solid var(--success); }
+    .kpi-card.success .kpi-num { color: var(--success); }
+
+    /* Funnel Stages */
+    .funnel-ribbon {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .funnel-step {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      position: relative;
+    }
+    .funnel-step b { display: block; font-size: 22px; font-weight: 800; color: var(--primary); }
+    .funnel-step span { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+
+    /* Section Headings */
+    .section-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 32px 0 16px;
+    }
+    .section-bar h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Tables */
+    .card-table {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      margin-bottom: 28px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    th {
+      background: #f8faf8;
+      padding: 12px 14px;
+      font-weight: 700;
+      color: var(--primary);
+      border-bottom: 1.5px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:hover td { background: #fafcfa; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-new { background: #e0f2fe; color: #0369a1; }
+    .badge-contacted { background: #fef3c7; color: #b45309; }
+    .badge-interested { background: #f3e8ff; color: #7e22ce; }
+    .badge-site-visit { background: #ffedd5; color: #c2410c; }
+    .badge-won { background: #dcfce7; color: #15803d; }
+    .badge-lost { background: #f1f5f9; color: #64748b; }
+
+    /* Dropdowns in Table */
+    select.table-select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    /* Modal for Add Caller */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal-card h3 { margin-bottom: 6px; color: var(--primary); }
+    .modal-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+    .modal-card input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .funnel-ribbon { grid-template-columns: repeat(2, 1fr); }
+      .header-actions { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-badge">📊</div>
+      <div>
+        <div class="brand-name">LUCKNOW ESTATE</div>
+        <div style="font-size:11px; color:#cbd5e1; letter-spacing:0.08em;">EXECUTIVE OWNER DASHBOARD</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <select id="periodDays" onchange="loadData()" class="btn btn-outline" style="padding:6px 10px;">
+        <option value="1">Today (24h)</option>
+        <option value="7" selected>Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="365">All Time</option>
+      </select>
+      <button class="btn btn-dark btn-sm" onclick="loadData()">🔄 Refresh</button>
+      <button class="btn btn-primary btn-sm" onclick="exportCSV()">📥 Export CSV</button>
+      <button class="btn btn-dark btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Login View -->
+  <div id="authView" style="display:none;">
+    <div class="auth-wrap">
+      <div style="font-size:42px; margin-bottom:12px;">🔐</div>
+      <h2>Executive Access</h2>
+      <p>Enter Master Admin Password</p>
+      <input type="password" id="adminPass" placeholder="Admin Password" autofocus onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn btn-primary" style="width:100%; padding:12px;" onclick="doLogin()">
+        Unlock Dashboard
+      </button>
+      <div style="margin-top:14px; font-size:12px; color:var(--text-muted);">
+        Default password: <b>admin123</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Main View -->
+  <main id="dashboardView" style="display:none;">
+
+    <!-- Top KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <small>Total Inquiries</small>
+        <div class="kpi-num" id="kpiTotal">0</div>
+        <div class="kpi-sub">Across all campaigns</div>
+      </div>
+      <div class="kpi-card">
+        <small>New Today</small>
+        <div class="kpi-num" id="kpiToday">0</div>
+        <div class="kpi-sub">Fresh leads received</div>
+      </div>
+      <div class="kpi-card">
+        <small>Uncontacted</small>
+        <div class="kpi-num" id="kpiNew">0</div>
+        <div class="kpi-sub">Awaiting first call</div>
+      </div>
+      <div class="kpi-card alert">
+        <small>Follow-up Overdue</small>
+        <div class="kpi-num" id="kpiOverdue">0</div>
+        <div class="kpi-sub">Action required</div>
+      </div>
+      <div class="kpi-card">
+        <small>Site Visits Booked</small>
+        <div class="kpi-num" id="kpiVisits">0</div>
+        <div class="kpi-sub">High intent buyers</div>
+      </div>
+      <div class="kpi-card success">
+        <small>Deals Closed (Won)</small>
+        <div class="kpi-num" id="kpiWon">0</div>
+        <div class="kpi-sub">Registry / Tokens</div>
+      </div>
+      <div class="kpi-card">
+        <small>Website Conversion</small>
+        <div class="kpi-num" id="kpiConv">0%</div>
+        <div class="kpi-sub" id="kpiTraffic">0 Total Visits</div>
+      </div>
+    </div>
+
+    <!-- Pipeline Funnel -->
+    <div class="funnel-ribbon" id="funnelRibbon">
+      <div class="funnel-step">
+        <b id="funnelNew">0</b>
+        <span>1. Fresh Leads</span>
+      </div>
+      <div class="funnel-step">
+        <b id="funnelContacted">0</b>
+        <span>2. Contacted</span>
+      </div>
+      <div class="funnel-step">
+        <b id="funnelInterested">0</b>
+        <span>3. Interested</span>
+      </div>
+      <div class="funnel-step">
+        <b id="funnelSiteVisit">0</b>
+        <span>4. Site Visits</span>
+      </div>
+      <div class="funnel-step" style="border-color:var(--success);">
+        <b id="funnelWon" style="color:var(--success);">0</b>
+        <span>5. Deals Won</span>
+      </div>
+    </div>
+
+    <!-- Telecaller Team Scorecard -->
+    <div class="section-bar">
+      <h3>👩‍💼 Telecaller Performance Scorecard</h3>
+      <button class="btn btn-outline btn-sm" onclick="openAddCallerModal()">➕ Add New Caller</button>
+    </div>
+    <div class="card-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Caller Name</th>
+            <th>Assigned Leads</th>
+            <th>Pending (New)</th>
+            <th>Calls Made</th>
+            <th>Interested</th>
+            <th>Site Visits</th>
+            <th>Deals Won</th>
+            <th>Conversion Rate</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="callerTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Marketing Attribution & Follow-up Due Row -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap:24px;">
+      <div>
+        <div class="section-bar" style="margin-top:0;">
+          <h3>🌐 Marketing Source Attribution</h3>
+        </div>
+        <div class="card-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Traffic Channel</th>
+                <th>Visitors</th>
+                <th>Leads Generated</th>
+                <th>Conversion %</th>
+              </tr>
+            </thead>
+            <tbody id="sourceTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-bar" style="margin-top:0;">
+          <h3 style="color:var(--danger);">⏰ Follow-Up Overdue Alert Center</h3>
+        </div>
+        <div class="card-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Assigned To</th>
+                <th>Scheduled Date</th>
+                <th>Last Note</th>
+              </tr>
+            </thead>
+            <tbody id="overdueTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Leads Registry -->
+    <div class="section-bar">
+      <h3>📋 Master Leads Registry & Conversation Logs</h3>
+      <div style="display:flex; gap:10px;">
+        <input type="text" id="leadSearch" placeholder="🔍 Filter leads..." style="padding:6px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px;" oninput="renderLeadsTable()">
+        <select id="statusFilter" style="padding:6px 10px; border:1px solid var(--border); border-radius:6px; font-size:13px;" onchange="renderLeadsTable()">
+          <option value="">All Statuses</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="interested">Interested</option>
+          <option value="site-visit">Site Visit Fixed</option>
+          <option value="won">Won</option>
+          <option value="lost">Lost</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Customer Contact</th>
+            <th>Property & Budget</th>
+            <th>Acquisition Source</th>
+            <th>Telecaller</th>
+            <th>Status</th>
+            <th>Interaction History</th>
+          </tr>
+        </thead>
+        <tbody id="leadsTableBody"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- Add Caller Modal -->
+  <div class="modal-overlay" id="addCallerModal" onclick="if(event.target===this)closeAddCallerModal()">
+    <div class="modal-card">
+      <h3>Add New Telecaller</h3>
+      <p>Assign a name and login PIN for the caller app</p>
+      <input type="text" id="newCallerName" placeholder="Full Name (e.g. Pooja Singh)">
+      <input type="text" id="newCallerPin" placeholder="4-digit Login PIN (e.g. 9876)">
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-outline" style="flex:1;" onclick="closeAddCallerModal()">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="submitNewCaller()">Create Caller</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let dashboardData = { leads: [], callers: [], sources: [] };
+    const STAT_OPTIONS = ['new', 'contacted', 'interested', 'site-visit', 'won', 'lost'];
+
+    const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    async function init() {
+      try {
+        const res = await fetch('/api/me');
+        if (res.ok) {
+          const user = await res.json();
+          if (user.role === 'admin') {
+            document.getElementById('authView').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'block';
+            loadData();
+            return;
+          }
+        }
+      } catch (e) {}
+      showAuth();
+    }
+
+    function showAuth() {
+      document.getElementById('authView').style.display = 'block';
+      document.getElementById('dashboardView').style.display = 'none';
+    }
+
+    async function doLogin() {
+      const pass = document.getElementById('adminPass').value;
+      if (!pass) return alert('Kripya admin password bharein');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: 'admin', password: pass })
+        });
+
+        if (res.ok) {
+          document.getElementById('authView').style.display = 'none';
+          document.getElementById('dashboardView').style.display = 'block';
+          loadData();
+        } else {
+          const err = await res.json();
+          alert(err.error || 'Password galat hai');
+        }
+      } catch (e) {
+        alert('Server se connect nahi ho paaya');
+      }
+    }
+
+    async function logout() {
+      await fetch('/api/logout');
+      showAuth();
+    }
+
+    async function loadData() {
+      const days = document.getElementById('periodDays').value;
+      try {
+        const res = await fetch('/api/admin/data?days=' + days);
+        if (res.status === 401) return showAuth();
+
+        dashboardData = await res.json();
+        renderKPIs();
+        renderCallers();
+        renderSources();
+        renderOverdue();
+        renderLeadsTable();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderKPIs() {
+      const leads = dashboardData.leads;
+      const today = new Date().toISOString().slice(0, 10);
+
+      document.getElementById('kpiTotal').textContent = leads.length;
+      document.getElementById('kpiToday').textContent = leads.filter(l => l.createdAt.startsWith(today)).length;
+      document.getElementById('kpiNew').textContent = leads.filter(l => l.status === 'new').length;
+
+      const overdueList = leads.filter(l => {
+        const c = l.calls[l.calls.length - 1];
+        return !['won', 'lost'].includes(l.status) && c && c.next && c.next < today;
+      });
+      document.getElementById('kpiOverdue').textContent = overdueList.length;
+
+      const visits = leads.filter(l => l.status === 'site-visit').length;
+      document.getElementById('kpiVisits').textContent = visits;
+
+      const won = leads.filter(l => l.status === 'won').length;
+      document.getElementById('kpiWon').textContent = won;
+
+      const totalTraffic = (dashboardData.sources || []).reduce((acc, s) => acc + s.visits, 0);
+      document.getElementById('kpiTraffic').textContent = totalTraffic + ' Total Visitors';
+      const conv = totalTraffic ? ((leads.length / totalTraffic) * 100).toFixed(1) : 0;
+      document.getElementById('kpiConv').textContent = conv + '%';
+
+      // Funnel
+      document.getElementById('funnelNew').textContent = leads.filter(l => l.status === 'new').length;
+      document.getElementById('funnelContacted').textContent = leads.filter(l => l.status === 'contacted').length;
+      document.getElementById('funnelInterested').textContent = leads.filter(l => l.status === 'interested').length;
+      document.getElementById('funnelSiteVisit').textContent = leads.filter(l => l.status === 'site-visit').length;
+      document.getElementById('funnelWon').textContent = won;
+    }
+
+    function renderCallers() {
+      const tbody = document.getElementById('callerTableBody');
+      const callers = dashboardData.callers || [];
+
+      if (callers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#64748b;">Koi telecaller added nahi hai.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = callers.map(c => {
+        const conv = c.assigned ? ((c.won / c.assigned) * 100).toFixed(1) : '0.0';
+        return `
+          <tr>
+            <td><b>${esc(c.name)}</b></td>
+            <td>${c.assigned}</td>
+            <td><span class="badge ${c.pending ? 'badge-new' : ''}">${c.pending}</span></td>
+            <td><b>${c.calls}</b></td>
+            <td>${c.interested}</td>
+            <td><span class="badge badge-site-visit">${c.visits}</span></td>
+            <td><span class="badge badge-won">${c.won}</span></td>
+            <td><b>${conv}%</b></td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="resetCallerPin('${c.id}')">Reset PIN</button>
+              <button class="btn btn-danger btn-sm" onclick="removeCaller('${c.id}')">Remove</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderSources() {
+      const tbody = document.getElementById('sourceTableBody');
+      const sources = dashboardData.sources || [];
+
+      if (sources.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Koi traffic event logged nahi hai.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = sources.map(s => {
+        const conv = s.visits ? ((s.leads / s.visits) * 100).toFixed(1) : '-';
+        return `
+          <tr>
+            <td><b>${esc(s.source || 'direct')}</b></td>
+            <td>${s.visits}</td>
+            <td><b>${s.leads}</b></td>
+            <td><span class="badge badge-contacted">${conv}%</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderOverdue() {
+      const tbody = document.getElementById('overdueTableBody');
+      const today = new Date().toISOString().slice(0, 10);
+      const callers = dashboardData.callers || [];
+      const getCallerName = id => (callers.find(c => c.id === id) || {}).name || 'Unassigned';
+
+      const overdue = dashboardData.leads.filter(l => {
+        const c = l.calls[l.calls.length - 1];
+        return !['won', 'lost'].includes(l.status) && c && c.next && c.next < today;
+      });
+
+      if (overdue.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#15803d; font-weight:600;">🎉 Sabhi follow-ups samay par hain! Koi overdue nahi.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = overdue.map(l => {
+        const c = l.calls[l.calls.length - 1];
+        return `
+          <tr>
+            <td>
+              <b>${esc(l.name)}</b><br>
+              <a href="tel:${l.phone}" style="color:var(--primary); font-weight:600;">📞 ${l.phone}</a>
+            </td>
+            <td><span class="badge badge-contacted">${esc(getCallerName(l.assignedTo))}</span></td>
+            <td><b style="color:var(--danger);">${esc(c.next)}</b></td>
+            <td style="font-size:12px; color:#475569;">${esc(c.note)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderLeadsTable() {
+      const tbody = document.getElementById('leadsTableBody');
+      const search = document.getElementById('leadSearch').value.toLowerCase().trim();
+      const statusF = document.getElementById('statusFilter').value;
+      const callers = dashboardData.callers || [];
+
+      let leads = dashboardData.leads;
+      if (statusF) leads = leads.filter(l => l.status === statusF);
+      if (search) {
+        leads = leads.filter(l =>
+          (l.name && l.name.toLowerCase().includes(search)) ||
+          (l.phone && l.phone.includes(search)) ||
+          (l.property && l.property.toLowerCase().includes(search)) ||
+          (l.interest && l.interest.toLowerCase().includes(search))
+        );
+      }
+
+      if (leads.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">Koi lead nahi mili.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = leads.map(l => {
+        const lastCall = l.calls[l.calls.length - 1];
+
+        return `
+          <tr>
+            <td style="white-space:nowrap;">
+              ${new Date(l.createdAt).toLocaleDateString()}<br>
+              <small style="color:var(--text-muted);">${new Date(l.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</small>
+            </td>
+
+            <td>
+              <b>${esc(l.name)}</b><br>
+              <a href="tel:${l.phone}" style="color:var(--primary); font-weight:600;">📞 ${l.phone}</a><br>
+              ${l.email ? `<small style="color:var(--text-muted);">${esc(l.email)}</small>` : ''}
+            </td>
+
+            <td>
+              <b>${esc(l.interest)}</b> (${esc(l.budget)})<br>
+              <small style="color:#0284c7;">${esc(l.property || 'General Inquiry')}</small>
+              ${l.message ? `<div style="font-size:11px; color:#64748b; font-style:italic;">"${esc(l.message)}"</div>` : ''}
+            </td>
+
+            <td>
+              <span class="badge" style="background:#f1f5f9; color:#334155;">${esc(l.utm_source)}</span><br>
+              <small style="color:var(--text-muted);">${esc(l.utm_campaign || '-')}</small>
+            </td>
+
+            <td>
+              <select class="table-select" onchange="assignCaller('${l.id}', this.value)">
+                <option value="">-- Unassigned --</option>
+                ${callers.map(c => `
+                  <option value="${c.id}" ${c.id === l.assignedTo ? 'selected' : ''}>${esc(c.name)}</option>
+                `).join('')}
+              </select>
+            </td>
+
+            <td>
+              <select class="table-select" onchange="updateLeadStatus('${l.id}', this.value)">
+                ${STAT_OPTIONS.map(opt => `
+                  <option value="${opt}" ${opt === l.status ? 'selected' : ''}>${opt.toUpperCase()}</option>
+                `).join('')}
+              </select>
+            </td>
+
+            <td>
+              ${lastCall ? `
+                <details>
+                  <summary style="cursor:pointer; font-weight:600; color:var(--primary);">
+                    ${esc(lastCall.by)}: <b>${esc(lastCall.outcome)}</b> (${l.calls.length} logs)
+                  </summary>
+                  <div style="background:#f8faf8; padding:8px; border-radius:6px; margin-top:6px; font-size:12px;">
+                    ${l.calls.map(c => `
+                      <p style="margin-bottom:6px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">
+                        <b>${new Date(c.at).toLocaleDateString()}</b> (${esc(c.by)} - <b>${esc(c.outcome)}</b>):<br>
+                        ${esc(c.note)}
+                        ${c.next ? `<br><span style="color:var(--danger); font-weight:600;">⏰ Follow-up: ${c.next}</span>` : ''}
+                      </p>
+                    `).join('')}
+                  </div>
+                </details>
+              ` : '<span style="font-size:12px; color:#64748b;">Call nahi hua</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function assignCaller(id, callerId) {
+      await fetch('/api/admin/assign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, callerId })
+      });
+      loadData();
+    }
+
+    async function updateLeadStatus(id, status) {
+      await fetch('/api/admin/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      });
+      loadData();
+    }
+
+    function openAddCallerModal() {
+      document.getElementById('newCallerName').value = '';
+      document.getElementById('newCallerPin').value = '';
+      document.getElementById('addCallerModal').style.display = 'flex';
+    }
+
+    function closeAddCallerModal() {
+      document.getElementById('addCallerModal').style.display = 'none';
+    }
+
+    async function submitNewCaller() {
+      const name = document.getElementById('newCallerName').value.trim();
+      const pin = document.getElementById('newCallerPin').value.trim();
+      if (!name || pin.length < 4) return alert('Kripya naam aur 4+ digit PIN dein');
+
+      try {
+        const res = await fetch('/api/admin/callers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, pin })
+        });
+
+        if (res.ok) {
+          closeAddCallerModal();
+          loadData();
+        } else {
+          const err = await res.json();
+          alert(err.error || 'Caller add nahi ho saka');
+        }
+      } catch (e) {
+        alert('Server error');
+      }
+    }
+
+    async function resetCallerPin(id) {
+      const newPin = prompt('Naya 4-digit PIN enter karein:');
+      if (!newPin || newPin.trim().length < 4) return;
+
+      const res = await fetch('/api/admin/callers/pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, pin: newPin.trim() })
+      });
+      if (res.ok) alert('Caller PIN successfully updated!');
+      else alert('PIN update nahi hua');
+    }
+
+    async function removeCaller(id) {
+      if (!confirm('Kya aap is telecaller ko remove karna chahte hain? Inki leads unassigned ho jayengi.')) return;
+      await fetch('/api/admin/callers/remove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      loadData();
+    }
+
+    async function exportCSV() {
+      const res = await fetch('/api/admin/export');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `lucknow_estate_leads_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    }
+
+    init();
+  </script>
+</body>
+</html>
