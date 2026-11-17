@@ -1,1 +1,13 @@
-{"name":"lucknowestate","version":"2.0.0","scripts":{"start":"node server.js"},"engines":{"node":">=22.5"}}
+{
+  "name": "lucknowestate",
+  "version": "2.0.0",
+  "description": "Lucknow Estate Luxury Real Estate Portal & Telecaller CRM",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node scripts/seed.js"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

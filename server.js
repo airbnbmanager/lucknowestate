@@ -5,12 +5,28 @@ const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
 
 const E = process.env;
+const isVercel = Boolean(E.VERCEL);
 const PORT = E.PORT || 3001;
 const ADMIN = E.ADMIN_PASSWORD || 'admin123';
-const DATA = E.DATA_DIR || path.join(__dirname, 'data');
+const DATA = E.DATA_DIR || (isVercel ? path.join('/tmp', 'lucknowestate_data') : path.join(__dirname, 'data'));
 const PUB = path.join(__dirname, 'public');
 
 fs.mkdirSync(DATA, { recursive: true });
+
+// On Vercel serverless runtime, copy pre-seeded database to writable /tmp directory
+if (isVercel) {
+  const seedDbPath = path.join(__dirname, 'data', 'lucknowestate.db');
+  const targetDbPath = path.join(DATA, 'lucknowestate.db');
+  if (!fs.existsSync(targetDbPath) && fs.existsSync(seedDbPath)) {
+    try {
+      fs.copyFileSync(seedDbPath, targetDbPath);
+      console.log('Seed database copied to /tmp for Vercel execution.');
+    } catch (err) {
+      console.error('Failed to copy seed db to /tmp:', err);
+    }
+  }
+}
+
 const db = new DatabaseSync(path.join(DATA, 'lucknowestate.db'));
 
 db.exec(`PRAGMA journal_mode=WAL;
@@ -619,12 +635,16 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🏰 Lucknow Estate Portal & CRM is Running!`);
-  console.log(`🌐 Public Website : http://localhost:${PORT}`);
-  console.log(`📞 Caller CRM     : http://localhost:${PORT}/caller.html`);
-  console.log(`📊 Admin Dashboard: http://localhost:${PORT}/admin.html`);
-  console.log(`🔑 Admin Password : ${ADMIN}`);
-  console.log(`====================================================`);
-});
+module.exports = handle;
+
+if (require.main === module || !isVercel) {
+  server.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🏰 Lucknow Estate Portal & CRM is Running!`);
+    console.log(`🌐 Public Website : http://localhost:${PORT}`);
+    console.log(`📞 Caller CRM     : http://localhost:${PORT}/caller.html`);
+    console.log(`📊 Admin Dashboard: http://localhost:${PORT}/admin.html`);
+    console.log(`🔑 Admin Password : ${ADMIN}`);
+    console.log(`====================================================`);
+  });
+}
