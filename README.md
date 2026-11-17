@@ -74,7 +74,16 @@ node scripts/seed.js
 
 ## 🌐 Cloud Deployment Options
 
-### Option 1: Render.com (Blueprint included)
+### Option 1: Vercel (1-Click Deploy – Free & Fast)
+Your repository is pre-configured with `vercel.json` and Node 22 Serverless Function handling.
+1. Click to deploy directly: **[Deploy to Vercel](https://vercel.com/new/git/import?s=https%3A%2F%2Fgithub.com%2Fairbnbmanager%2Flucknowestate)**
+2. In Project Settings, set Environment Variable:
+   - `ADMIN_PASSWORD` = `admin123` (or your chosen password)
+3. Click **Deploy**.
+4. You will get a permanent `https://lucknowestate.vercel.app` domain.
+5. **Connecting Custom Domain later**: Go to **Settings > Domains** in Vercel, add your domain, and follow the simple DNS instructions.
+
+### Option 2: Render.com (Persistent Container)
 1. Link GitHub repository `airbnbmanager/lucknowestate`.
 2. Deploy as Web Service (Docker runtime).
 3. Set Environment Variable: `ADMIN_PASSWORD=your_secure_password`.
