@@ -11,9 +11,9 @@ A production-ready real estate lead generation portal, mobile-first telecaller C
 
 | Portal | Local URL | Live Public Cloudflare URL | Access Credentials |
 | :--- | :--- | :--- | :--- |
-| **Public Real Estate Website** | [http://localhost:3001/](http://localhost:3001/) | [Live Website (Cloudflare)](https://tells-emissions-burn-assure.trycloudflare.com/) | Public (No login needed) |
-| **Telecaller CRM Panel** | [http://localhost:3001/caller.html](http://localhost:3001/caller.html) | [Live Caller CRM (Cloudflare)](https://tells-emissions-burn-assure.trycloudflare.com/caller.html) | Name: **Riya Sharma** (PIN: `1234`)<br>Name: **Amit Verma** (PIN: `5678`) |
-| **Executive Admin Dashboard** | [http://localhost:3001/admin.html](http://localhost:3001/admin.html) | [Live Admin CRM (Cloudflare)](https://tells-emissions-burn-assure.trycloudflare.com/admin.html) | Password: **`admin123`** |
+| **Public Real Estate Website** | [http://localhost:3001/](http://localhost:3001/) | [Live Website (Cloudflare)](https://regardless-labels-diverse-bundle.trycloudflare.com/) | Public (No login needed) |
+| **Telecaller CRM Panel** | [http://localhost:3001/caller.html](http://localhost:3001/caller.html) | [Live Caller CRM (Cloudflare)](https://regardless-labels-diverse-bundle.trycloudflare.com/caller.html) | Name: **Riya Sharma** (PIN: `1234`)<br>Name: **Amit Verma** (PIN: `5678`) |
+| **Executive Admin Dashboard** | [http://localhost:3001/admin.html](http://localhost:3001/admin.html) | [Live Admin CRM (Cloudflare)](https://regardless-labels-diverse-bundle.trycloudflare.com/admin.html) | Password: **`admin123`** |
 
 ---
 
